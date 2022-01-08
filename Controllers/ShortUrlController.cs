@@ -14,16 +14,16 @@ public class ShortUrlController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet(Name = "GetShortUrl")]
-    public IEnumerable<ShortUrl> Get()
+    [HttpGet(Name = "GetUrl")]
+    public ShortUrl Get(string shortUrl)
     {
-        return new List<ShortUrl>();
+        return new ShortUrl() { Url = "test", Expiration = DateTime.Now, OriginalUrl = "test" };
     }
 
-    
+
     [HttpPost(Name = "ShortUrl")]
-    public string  ShortUrl(string userId, string originalUrl, DateTime expirationTime )
+    public string  ShortUrl(string userId, string originalUrl, DateTime expirationTime)
     {
-        return originalUrl;
+        return ShortUrlService.CreateShortUrl(originalUrl);
     }
 }
