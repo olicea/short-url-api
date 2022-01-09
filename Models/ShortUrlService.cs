@@ -3,7 +3,12 @@ using System.Text;
 
 public class ShortUrlService : ISHortUrlService
 {
-    public Task<ShortUrl> CreateShortUrlAsync(string userId, string originalUrl, string shortUrl = "", DateTime? expirationDate = null)
+    public ShortUrlService(ShortUrlContext context)
+    {
+        _context = context;
+    }
+
+    public async Task<ShortUrl> CreateShortUrlAsync(string userId, string originalUrl, string shortUrl = "", DateTime? expirationDate = null)
     {
         //create the short url
         string shortUrlString = CreateShortUrl(originalUrl);
@@ -12,19 +17,21 @@ public class ShortUrlService : ISHortUrlService
         {
             Url = shortUrlString,
             CreationDate = DateTime.UtcNow,
-            ExpirationDate = DateTime.UtcNow + timeToLive,
+            ExpirationDate = DateTime.UtcNow + _timeToLive,
             OriginalUrl = originalUrl
         };
-        //add url to the database
-        shortUrls.Add(url);
 
-        return Task.FromResult(url);
+        //add url to the database context
+        _context.ShortUrls.Add(url);
+        await _context.SaveChangesAsync();
+
+        return url;
     }
 
     public Task<ShortUrl> GetOriginalUrlsAsync(string shortUrl)
     {
         // lookup the short url from the database
-        var url = shortUrls.FirstOrDefault(u => u.Url == shortUrl);
+        var url = _context.ShortUrls.FirstOrDefault(u => u.Url == shortUrl);
 
         //fail if it does nto exist
         if (url == null)
@@ -48,13 +55,13 @@ public class ShortUrlService : ISHortUrlService
         //encode to base64
         var base64 = Convert.ToBase64String(hash);
 
-        //get only the first maxLength characters
-        var shortUrl = base64.Substring(0, maxLength);
+        //get only the first _maxLength characters
+        var shortUrl = base64.Substring(0, _maxLength);
 
         return shortUrl;
     }
 
-    internal const int maxLength = 6;
-    internal readonly TimeSpan timeToLive = TimeSpan.FromDays(90);
-    internal List<ShortUrl> shortUrls = new List<ShortUrl>();
+    internal const int _maxLength = 6;
+    internal readonly TimeSpan _timeToLive = TimeSpan.FromDays(90);
+    internal ShortUrlContext _context;
 }
