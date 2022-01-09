@@ -8,8 +8,14 @@ Run te service
 dotnet run
 ```
 
-test the service
+create a new short url
 
 ```
-curl -X GET http://localhost:7291/shorturl
+curl -X POST https://localhost:7259/shorturl -k -d '{"userId":"1", "originalUrl":"https://github.com/olicea", "Url":"shorty"}' -H "Content-Type: application/json" -H "accept: text/plain" 
+```
+
+
+ertrieve a short url
+```
+curl -X GET http://localhost:7291/shorty
 ```
