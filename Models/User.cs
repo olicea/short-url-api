@@ -1,5 +1,8 @@
-public class User
+namespace short_url_api.Models
 {
-    public string Id;
-    public string Name;
+    public class User
+    {
+        public long Id { get; set; }
+        public string Name { get; set; }
+    }
 }

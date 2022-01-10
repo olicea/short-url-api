@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using short_url_api.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 

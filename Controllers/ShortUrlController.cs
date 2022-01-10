@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using short_url_api.Models;
 
 namespace short_url_api.Controllers;
 
