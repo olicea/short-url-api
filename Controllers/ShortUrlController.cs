@@ -21,6 +21,12 @@ public class ShortUrlController : ControllerBase
     {
         // redirect to right url
         ShortUrl url = await _shortUrlService.GetOriginalUrlsAsync(shortUrl);
+
+        if (url == null)
+        {
+            return NotFound();
+        }
+
         return Redirect(url.OriginalUrl);
     }
 
@@ -28,5 +34,21 @@ public class ShortUrlController : ControllerBase
     public async Task<ShortUrl> ShortUrlAsync(ShortUrl shortUrl)
     {
         return await _shortUrlService.CreateShortUrlAsync(shortUrl);
+    }
+
+    [HttpDelete()]
+    public async Task<ActionResult> DeleteShortUrlAsync(string userId, string shortUrl)
+    {
+        ShortUrl url = await _shortUrlService.GetOriginalUrlsAsync(shortUrl);
+
+        if (url == null)
+        {
+            return NotFound();
+        }
+
+        // delete short url
+        await _shortUrlService.DeleteShortUrlAsync(userId, shortUrl);
+
+        return NoContent();
     }
 }

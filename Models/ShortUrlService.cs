@@ -36,12 +36,6 @@ namespace short_url_api.Models
             // lookup the short url from the database
             var url = _context.ShortUrls.FirstOrDefault(u => u.Url == shortUrl);
 
-            //fail if it does nto exist
-            if (url == null)
-            {
-                throw new UrlDoesNotExistException("Short url does not exist");
-            }
-
             // return empty for now
             return Task.FromResult(url);
         }
@@ -62,6 +56,14 @@ namespace short_url_api.Models
             var shortUrl = base64.Substring(0, _maxLength);
 
             return shortUrl;
+        }
+
+        public async Task DeleteShortUrlAsync(string userId, string shortUrl)
+        {
+            // delete short url
+            var url = _context.ShortUrls.FirstOrDefault(u => u.Url == shortUrl);
+            _context.ShortUrls.Remove(url);
+            await _context.SaveChangesAsync();
         }
 
         internal const int _maxLength = 6;
