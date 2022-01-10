@@ -16,26 +16,13 @@ public class ShortUrlController : ControllerBase
         _shortUrlService = shortUrlService;
     }
 
-    // [HttpGet()]
-    // public async Task<ActionResult> GetAsync(string shortUrl)
-    // {
-    //     // redirect to right url
-    //     ShortUrl url = await _shortUrlService.GetOriginalUrlsAsync(shortUrl);
-    //     return Redirect(url.OriginalUrl);
-    // }
-
-    [HttpGet(Name = "GetUrl")]
-    public ShortUrl Get(string userId, string shortUrl)
+    [HttpGet("{shortUrl}")]
+    public async Task<ActionResult> GetShortUrlAsync(string shortUrl)
     {
-        return new ShortUrl() { Url = "test", ExpirationDate = DateTime.Now, OriginalUrl = "test" };
-        //_shortUrlService.GetOriginalUrlsAsync(shortUrl);
+        // redirect to right url
+        ShortUrl url = await _shortUrlService.GetOriginalUrlsAsync(shortUrl);
+        return Redirect(url.OriginalUrl);
     }
-
-    // [HttpPost(Name = "ShortUrl")]
-    // public async Task<ShortUrl> ShortUrlAsync(string userId, string originalUrl, string shortUrl = null, DateTime? expirationDate = null)
-    // {
-    //     return await _shortUrlService.CreateShortUrlAsync(userId, originalUrl, shortUrl, expirationDate);
-   // }
 
     [HttpPost(Name = "ShortUrl")]
     public async Task<ShortUrl> ShortUrlAsync(ShortUrl shortUrl)
