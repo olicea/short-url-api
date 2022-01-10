@@ -17,5 +17,5 @@ curl -X POST https://localhost:7259/shorturl -k -d '{"userId":"1", "originalUrl"
 
 ertrieve a short url
 ```
-curl -X GET https://localhost:7259/shorturl -k -d '{"userId":"1", "Url":"shorty"}' -H "Content-Type: application/json" -H "accept: text/plain" 
+curl -X GET https://localhost:7259/shorturl?userId=1\&shortUrl=moZHWo -k
 ```
