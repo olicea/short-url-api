@@ -1,4 +1,4 @@
-# Shortening url service
+# Shortenning url service
 
 
 ## Testing
@@ -15,7 +15,7 @@ curl -X POST https://localhost:7259/shorturl -k -d '{"userId":"1", "originalUrl"
 ```
 
 
-retrieve a short url
+ertrieve a short url
 ```
 curl -X GET https://localhost:7259/shorturl?userId=1\&shortUrl=moZHWo -k
 ```
